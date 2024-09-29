@@ -1,0 +1,22 @@
+{
+  "name": "mediaflow",
+  "version": "1.0.0",
+  "description": "this is a video sharing platform.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev":"npx nodemon src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "javascript",
+    "backend",
+    "videosharing",
+    "youtube"
+  ],
+  "author": "Arpit Gupta",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}
