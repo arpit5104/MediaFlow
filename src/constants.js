@@ -1,1 +1,1 @@
-export const DB_NAME = "MediaFlow"
+export const DB_NAME = 'MediaFlow'
