@@ -4,6 +4,7 @@ import  { User }  from  "../models/user.model.js"
 import  {  uploadOnCloudinary } from "../utils/cloudinary.js"
 import  {ApiResponse}  from "../utils/ApiResponse.js"
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
 const generateAccessAndRefreshToken =  async(userId)=>{
     try {
@@ -144,7 +145,7 @@ const  logoutUser  = asyncHandler(async (req,res)=>{
     // reset refeshToken
      await User.findByIdAndUpdate(req.user._id,
         {
-            $set:{ refreshToken:undefined}
+            $unset:{ refreshToken:1}
         },
         {
             new:true
@@ -202,11 +203,11 @@ const  refreshAccessToken  = asyncHandler(async (req,res)=>{
 const changeUserPassword = asyncHandler(async (req,res)=>{
     const {oldPassword, newPassword, confirmPassword} = req.body;
 
-    if(!(newPassword  == confirmPassword)){
+    if(newPassword  != confirmPassword){
         throw new ApiError(400,"New password and confirm password must be same");
     }
 
-    const user = User.findById(req.user?._id);
+    const user = await User.findById(req.user?._id);
     const isPasswordCorrect = await user.isPasswordCorrect(oldPassword);
 
     if(!isPasswordCorrect){
@@ -249,7 +250,7 @@ const updateAccountDetail  = asyncHandler(async (req,res)=>{
 })
 
 const updateUserAvatar = asyncHandler(async(req,res)=>{
-    const avatarLocalPath = req.files?.path
+    const avatarLocalPath = await req.files?.path
 
     if(!avatarLocalPath){
         throw new ApiError(400,"Please upload an image");
